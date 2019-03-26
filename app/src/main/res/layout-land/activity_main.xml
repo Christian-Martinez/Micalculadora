@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/calc_horizontal_margin"
     android:paddingRight="@dimen/calc_horizontal_margin"
-    android:paddingTop="@dimen/calc_vertical_margin"
-    android:paddingBottom="@dimen/calc_vertical_margin"
     tools:context=".MainActivity">
 
     <android.support.design.widget.TextInputLayout
