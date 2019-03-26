@@ -30,5 +30,4 @@
     <style name="ButtonMDDanger" parent="ButtonBase">
         <item name="colorButtonNormal">@color/red_500</item>
     </style>
-
 </resources>

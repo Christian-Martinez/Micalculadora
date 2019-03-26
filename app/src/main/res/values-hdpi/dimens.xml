@@ -3,8 +3,8 @@
 
     <dimen name="activity_horizontal_margin">8dp</dimen>
 
-    <dimen name="about.textView.drawablePadding">4dp</dimen>
+    <dimen name="about_textView_drawablePadding">4dp</dimen>
 
-    <dimen name="calc.btn.size">60dp</dimen>
-    <dimen name="calc.button.textSize">24sp</dimen>
+    <dimen name="calc_btn_size">60dp</dimen>
+    <dimen name="calc_button_textSize">24sp</dimen>
 </resources>
