@@ -19,4 +19,6 @@
     <string name="calc.btn.sub">-</string>
     <string name="calc.btn.sum">+</string>
     <string name="calc.btn.result">=</string>
+
+    <string name="message_exp_incorrect">La expresión es incorrecta.</string>
 </resources>
