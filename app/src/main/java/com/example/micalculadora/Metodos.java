@@ -100,7 +100,7 @@ public class Metodos {
                     //showMessage(R.string.message_exp_incorrect);
                     callback.onShowMessage(R.string.message_exp_incorrect);
                 }
-                }
+            }
         } else { // si 'values.length' no es mayor a 1(osea = 0) no se pudo dividir con ningún operador
             // verifica si viene del boton '='
             if (fromResult) {

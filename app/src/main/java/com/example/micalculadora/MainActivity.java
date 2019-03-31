@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.contentMain)
     RelativeLayout contentMain;
 
+    private boolean isEditInProgress = false;
+    private int minLength;
+    private int textSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         configEditText();
+
     }
 
     private void configEditText() {
@@ -67,17 +74,52 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnClear:
+                etInput.setText("");
                 break;
             case R.id.btnDiv:
-                break;
             case R.id.btnMultiplication:
-                break;
             case R.id.btnSub:
-                break;
             case R.id.btnSum:
+                resolve(false);
+                final String operador = ((Button) view).getText().toString();
+                final String operacion = etInput.getText().toString();
+
+                final String ultimoCaracter = operacion.isEmpty() ? "" : operacion.substring(operacion.length() - 1);
+                if (operador.equals(Constantes.OPERATOR_SUB)) {
+                    if (operacion.isEmpty() ||
+                            (!(ultimoCaracter.equals(Constantes.OPERATOR_SUB)) &&
+                                    !(ultimoCaracter.equals(Constantes.POINT)))) {
+                        etInput.getText().append(operador);
+                    }
+                } else {
+                    if (!operacion.isEmpty() &&
+                            !(ultimoCaracter.equals(Constantes.OPERATOR_SUB)) &&
+                            !(ultimoCaracter.equals(Constantes.POINT))) {
+                        etInput.getText().append(operador);
+                    }
+                }
                 break;
             case R.id.btnResult:
+                resolve(true);
                 break;
         }
+    }
+
+    private void resolve(boolean fromResult) {
+        Metodos.tryResolve(fromResult, etInput, new OnResolveCallback() {
+            @Override
+            public void onShowMessage(int errorRes) {
+                showMessage(errorRes);
+            }
+
+            @Override
+            public void onIsEditing() {
+                isEditInProgress = true;
+            }
+        });
+    }
+
+    private void showMessage(int errorRes) {
+        Snackbar.make(contentMain, errorRes, Snackbar.LENGTH_SHORT).show();
     }
 }
