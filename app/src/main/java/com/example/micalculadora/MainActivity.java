@@ -1,6 +1,10 @@
 package com.example.micalculadora;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,12 +34,55 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        minLength = getResources().getInteger(R.integer.main_min_length);
+        textSize = getResources().getInteger(R.integer.main_input_textSize);
         configEditText();
-
     }
 
     private void configEditText() {
+        //para el icono de borrar
+        etInput.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    //verifica la posicion
+                    if (motionEvent.getRawX() >= (etInput.getRight() -
+                            etInput.getCompoundDrawables()[Constantes.DRAWABLE_RIGHT].getBounds().width())) {
+                        if (etInput.length() > 0) {
+                            final int length = etInput.getText().length();
+                            etInput.getText().delete(length - 1, length);
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+        //para cuando aprete 2 operadores seguido
+        etInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!isEditInProgress && Metodos.canReplaceOperator(charSequence)) {
+                    isEditInProgress = true;
+                    etInput.getText().delete(etInput.getText().length() - 2, etInput.getText().length() - 1);
+                }
+
+                if (charSequence.length() > minLength) {
+                    etInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize -
+                            (((charSequence.length() - minLength) * 2) + (charSequence.length() - minLength)));
+                } else {
+                    etInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                isEditInProgress = false;
+            }
+        });
     }
 
     @OnClick({R.id.btnSeven, R.id.btnFour, R.id.btnOne, R.id.btnEight, R.id.btnFive, R.id.btnTwo,
